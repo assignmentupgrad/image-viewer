@@ -49,14 +49,12 @@ class Login extends Component {
                         </Typography> <br/>
                         <FormControl required className="formControl"> 
                             <InputLabel htmlFor="username">Username</InputLabel>
-                            <Input id="username" type="text" username={this.state.username}
-                            onChange={this.inputUsernameChangeHandler}/>
+                            <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler}/>
                         <FormHelperText className={this.state.reqUsername}><span className="red">required</span></FormHelperText>
                          </FormControl><br/><br/>
                         <FormControl required className="formControl">
                             <InputLabel htmlFor="password">Password</InputLabel>
-                             <Input id="password" type="password" password={this.state.password}
-                             onChange={this.inputPasswordChangeHandler}/>
+                             <Input id="password" type="password" password={this.state.password} onChange={this.inputPasswordChangeHandler}/>
                         <FormHelperText className={this.state.reqPassword}><span className="red">required</span></FormHelperText>
                          </FormControl> <br/><br/><br/>
                             <Button variant="contained" onClick={this.loginButtonHandler} color="primary">
