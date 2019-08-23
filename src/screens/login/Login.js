@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 import './Login.css';
 import Header from '../../common/header/Header';
 import Card from '@material-ui/core/Card';
@@ -20,6 +21,7 @@ class Login extends Component {
             password:"",
             reqUsername: "dispNone",
             reqPassword: "dispNone",
+            error: "dispNone",
         }
     }
 
@@ -34,7 +36,16 @@ class Login extends Component {
     loginButtonHandler = () => {
         this.state.username === "" ? this.setState({reqUsername: "dispBlock"}): this.setState({reqUsername:"dispNone"});
         this.state.password === "" ? this.setState({reqPassword: "dispBlock"}):this.setState({reqPassword:"dispNone"});
-
+        let usernameCorrect = "IVUser";
+        let passwordCorrect ="IVPassword";
+        if(this.state.username === usernameCorrect && this.state.password === passwordCorrect){
+            ReactDOM.render(<div>Home Page</div>, document.getElementById('root'));
+        }
+        else{
+            if(this.state.username !== "" && this.state.password !== "")
+            this.setState({error: "dispBlock"});
+        }
+             
     }
 
     render(){
@@ -56,7 +67,10 @@ class Login extends Component {
                             <InputLabel htmlFor="password">Password</InputLabel>
                              <Input id="password" type="password" password={this.state.password} onChange={this.inputPasswordChangeHandler}/>
                         <FormHelperText className={this.state.reqPassword}><span className="red">required</span></FormHelperText>
-                         </FormControl> <br/><br/><br/>
+                         </FormControl> <br/><br/>
+                         <FormControl required className="formControl">
+                         <FormHelperText className={this.state.error}><span className="red">Incorrect username and/or password</span></FormHelperText>
+                         </FormControl><br/><br/>
                             <Button variant="contained" onClick={this.loginButtonHandler} color="primary">
                                 Login
                             </Button>
