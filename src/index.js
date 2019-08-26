@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import 'typeface-roboto';
 import * as serviceWorker from './serviceWorker';
-import Login from './screens/login/Login';
+import Controller from './screens/Controller';
 
-ReactDOM.render(<Login />, document.getElementById('root'));
+ReactDOM.render(<Controller/>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

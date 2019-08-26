@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import './Login.css';
 import Header from '../../common/header/Header';
+import Home from '../../screens/home/Home';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -10,6 +11,7 @@ import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
+
 
 
 class Login extends Component {
@@ -22,6 +24,8 @@ class Login extends Component {
             reqUsername: "dispNone",
             reqPassword: "dispNone",
             error: "dispNone",
+            loginSucess: false,
+            loggedIn: sessionStorage.getItem("access_token") == null ? false : true,
         }
     }
 
@@ -38,24 +42,25 @@ class Login extends Component {
         this.state.password === "" ? this.setState({reqPassword: "dispBlock"}):this.setState({reqPassword:"dispNone"});
         let usernameCorrect = "IVUser";
         let passwordCorrect ="IVPassword";
-        if(this.state.username === usernameCorrect && this.state.password === passwordCorrect){
-            ReactDOM.render(<div>Home Page</div>, document.getElementById('root'));
+            if(this.state.username === usernameCorrect && this.state.password === passwordCorrect){
+                sessionStorage.setItem('access_token', '8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784');
+                console.log(sessionStorage.getItem('access_token'));
+                 ReactDOM.render(<Home baseUrl={this.props.baseUrl}/>, document.getElementById('root'));
         }
         else{
             if(this.state.username !== "" && this.state.password !== "")
             this.setState({error: "dispBlock"});
         }
-             
     }
 
     render(){
         return(
             <div>
-                <Header/> 
+                <Header baseUrl={this.props.baseUrl}/> 
             
                 <Card className="cardStyle">
                     <CardContent>
-                        <Typography variant="headline" component="h2">
+                        <Typography variant="h4">
                                LOGIN
                         </Typography> <br/>
                         <FormControl required className="formControl"> 

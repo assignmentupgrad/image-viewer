@@ -7,6 +7,7 @@ class Header extends Component {
             <div>
                <header className="app-header">
                     <p className="logo">Image Viewer</p>
+
                 </header><br/><br/>
             </div>
         )
