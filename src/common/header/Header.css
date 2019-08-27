@@ -4,8 +4,6 @@
     padding: 0px;
     margin: 0px;
 }
-
-
 .logo {
     float: left;
     color: #fff;
@@ -13,4 +11,27 @@
     vertical-align: middle;   
     padding-left: 8px;
 }
+.searchBox {
+    height: 35px;
+    border-radius: 4px;
+    width: 300px;
+    float: right;
+    background-color: #c0c0c0;
+    margin: 10px;
+}
 
+/* Styles added for Search box implemented */
+
+.app-logo{
+    height: 30px;
+    padding: 5px;
+}
+
+.searchText{
+    padding-bottom: 0px;
+}
+
+.formControl {
+    width: 150px;
+    height: 30px;
+}
