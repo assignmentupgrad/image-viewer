@@ -4,23 +4,18 @@
     padding: 0px;
     margin: 0px;
 }
-.logo {
-    float: left;
-    color: #fff;
-    font-weight: 18px;
-    vertical-align: middle;   
-    padding-left: 8px;
-}
+
+/* Styles added for Search box implemented */
+
 .searchBox {
     height: 35px;
     border-radius: 4px;
     width: 300px;
-    float: right;
+    float: left;
     background-color: #c0c0c0;
     margin: 10px;
+    margin-left: 750px;
 }
-
-/* Styles added for Search box implemented */
 
 .app-logo{
     height: 30px;
@@ -33,5 +28,31 @@
 
 .formControl {
     width: 150px;
-    height: 30px;
+     height: 30px;
 }
+
+.profilePic {
+    float: right;
+}
+
+/* Styles added for user profile icon implemented */
+
+
+.logo {
+    float: left;
+    color: #fff;
+    font-weight: 18px;
+    vertical-align: middle;   
+    padding-left: 8px;
+}
+
+.iconBtn{
+    float: right;
+    width: 40px;
+      
+}
+
+.profilePic {
+   width: 35px;
+   margin-right: 20px;
+  }
