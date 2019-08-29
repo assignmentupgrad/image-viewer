@@ -49,10 +49,10 @@
 .iconBtn{
     float: right;
     width: 40px;
-      
 }
 
 .profilePic {
    width: 35px;
    margin-right: 20px;
-  }
+   height: 35px;
+}

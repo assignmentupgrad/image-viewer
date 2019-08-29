@@ -31,7 +31,7 @@ class Header extends Component {
                       aria-label="add a profile pic"
                       edge="start"
                       size="medium">
-                        <img className="profilePic" src = {this.props.profilePic} alt="logged in user profile pic"/>
+                        <img className="profilePic" src={this.props.profilePic} alt="logged in user profile pic"/>
                         </IconButton> : ""}
                      </header><br/><br/>
             </div>
