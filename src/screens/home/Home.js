@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+//import moment from 'react-moment'
 import './Home.css';
 import { withStyles } from '@material-ui/core/styles';
 import Header from '../../common/header/Header';
@@ -10,6 +10,11 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import SvgIcon from '@material-ui/core/SvgIcon';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import Button from '@material-ui/core/Button';
+import * as moment from 'moment';
 
 
 const styles = theme => ({
@@ -22,11 +27,11 @@ const styles = theme => ({
         overflow: 'hidden',
     },
       card: {
-        maxWidth: 520,
+        maxWidth: 550,
         margin: 20,
         height: 'auto',
         marginLeft: '4%',
-    },
+      },
      avatar: {
         margin: 15,
         width: 60,
@@ -68,6 +73,7 @@ class Home extends Component{
         super();
         this.state = {
             profilePic: [],
+            access_token: sessionStorage.getItem("access_token"),
             loggedIn: sessionStorage.getItem("access_token") === "null" ? false : true,
             userImages: [],
             createdTime: [],
@@ -75,6 +81,10 @@ class Home extends Component{
             captionText:[],
             captionTag:[],
             favClick: false,
+            addComment: [],
+            searchField: "",
+            filteredRes:[],
+            
             }
     }
         
@@ -106,9 +116,34 @@ class Home extends Component{
             });
             xhrEndPt2.open("GET",this.props.baseUrl+"media/recent?access_token=8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784");
             xhrEndPt2.send(null);
-         }
 
+            }
+
+          onSearchFilterHandler = e => {
+          //     const searchText = event.target.value.toLowerCase();
+          //     let userDetails = JSON.parse(JSON.stringify(this.state.userImages));
+          //  let filterRes = [];
+          //  if(userDetails !== null && userDetails.length > 0){
+          //    filterRes = userDetails.filter( 
+          //      post => (
+          //      post.caption.text.split("\n")[0].toLowerCase.indexOf(searchText) > -1
+          //      ));
+          //      this.setState({filteredRes:filterRes});
+          //   }
+        }
+
+         addBtnCommentHandler = (event, id) => {
+            let user_Images = JSON.parse(JSON.stringify(this.state.userImages));
+
+         }
                 
+        myDateFun = (imgdate) => {
+          return moment(new Date(parseInt(imgdate))).format("DD/MM/YYYY HH:mm:ss");
+        }
+         
+        addCommentChangeHandler = (event) => {
+          this.setState({addComment:event.target.value});
+        }
                 
         render() {
             const { classes } = this.props;
@@ -119,40 +154,55 @@ class Home extends Component{
                 baseUrl={this.props.baseUrl}
                 showSearchBox="true" 
                 profilePic={this.state.profilePic} 
-                loggedIn={this.state.loggedIn}/> 
+                loggedIn={this.state.loggedIn}
+                showAccount="true"
+                onSearchInputChangeHandler={this.onSearchFilterHandler()}/> 
                 <div>             
-                <GridList cols={2} cellHeight='auto'>
+                    <GridList cols={2} cellHeight='auto'>
                     {this.state.userImages.map(img =>(
-                        <Card className={classes.card}  >
+                        <Card className={classes.card} key={img.cols}>
                             <CardHeader avatar={
                              <Avatar alt="profile-Pic" src={(this.state.profilePic).toString()} className={classes.avatar}/>
                             }    
                              title={img.user.username}     
-                             subheader={<span>{new Date(img.caption.created_time).toDateString()}</span>}>
+                            // subheader={moment(img.caption.created_time).format("DD-MM-YYYY hh:mm:ss")}>
+                            subheader = {this.myDateFun(img.caption.created_time)}>
                             </CardHeader>
                             <CardContent>
-                            <GridListTile key={"userImg"+ img.caption.from.id} className="user-image-grid-item">
+                            <GridListTile key={"userImg"+ img.id} className="user-image-grid-item">
                                 <img src={img.images.standard_resolution.url} className="userImage" alt={img.caption.text}/>
                             </GridListTile>
                             <hr className={classes.hr}/>
-                            <p className="captionText">{(img.caption.text).split("#")[0]}</p>
+                            { this.state.comment !=="" ?
+                            <p>{img.user.username}:{this.state.comment} </p> : ""}
+                             <h4 className="captionText">{(img.caption.text).split("#")[0]}</h4>
                             {img.tags.map(tags=>(
-                                 <span className="captionTag">{"#"+tags+""}</span>
+                               <span className="captionTag">{"#"+tags+""}</span>
                             ))} <br/>
-                             <div onClick={()=>this.setState({favClick: !this.state.favClick})}>
-                             {this.state.favClick ? <div>
+                             <span onClick={()=>this.setState({favClick: !this.state.favClick})}>
+                             {this.state.favClick === true? <div>
                              <span className="favIcon"><FavoriteIcon className={classes.icon}/></span>
                               <span className="like">{" "+ (img.likes.count)--} likes</span> </div>:
-                           <div>  <span><FavoriteBorderIcon className={classes.icon}/></span>  <span className="like">{" "+ (img.likes.count)++} likes</span></div> } 
-                            {/* <span className="like">{" "+ img.likes.count} likes</span>  */}
-                            </div>
+                           <div><span><FavoriteBorderIcon className={classes.icon}/></span>  <span className="like">{" "+ (img.likes.count)++} likes</span></div> } 
+                            </span>
+                             <br/><br/>
+                            <span>
+                            <FormControl className="formControl"> 
+                                <InputLabel htmlFor="addComment">Add a comment</InputLabel>
+                                <Input id="addComment" type="text" comment={this.state.comment} placeholder="Add a comment"
+                                onChange={this.addCommentChangeHandler.bind(this)} value={this.state.addComment}/>
+                            </FormControl>
+                            <Button variant="contained" onClick={this.addBtnCommentHandler.bind(this,img.id)} 
+                            color="primary" className="AddBtn">
+                                ADD
+                            </Button>
+                            </span>
                             </CardContent>
                          </Card>
                     ))}
                  </GridList>
                  </div>
-                 
-               
+                        
             </div>
                )}
 }
