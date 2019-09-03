@@ -1,0 +1,46 @@
+.profileInfoSection {
+    display: flex;
+    flex-direction: row;
+}
+
+.username {
+    margin-left: 30px;
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.right{
+    display: flex;
+    flex-direction: column;
+}
+
+.userInfo{
+    margin-left: 30px;
+   padding: 0px;
+  margin-top: 0px;      
+}
+
+.infoTabs{
+    margin-right: 60px;
+}
+
+.userFullName{
+    margin-left: 30px;
+    margin-top: 0px;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.editIcon{
+     margin-left: 10px;
+}
+
+/* Common styles starts */
+
+.red{
+    color: red;
+}
+
+/* Common styles ends */
