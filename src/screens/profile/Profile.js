@@ -12,6 +12,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Typography from '@material-ui/core/Typography';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+
 
 
 const customStyles = {
@@ -35,6 +38,10 @@ const styles = theme => ({
   fab: {
     margin: theme.spacing(1),
   },
+  gridListMain: {
+    transform: 'translateZ(0)',
+    cursor: 'pointer'
+},
 })
 
 const TabContainer = function (props) {
@@ -163,12 +170,22 @@ class Profile extends Component {
                 <Button variant="contained" onClick={this.updateFullNameHandler} color="primary">UPDATE</Button>
               </Modal>
             </div>
-
-
-          </div>
+            </div>
+            <div  className="flex-container">
+              <div className="imagePosts">
+                <br/><br/>
+              <GridList cellHeight={350} cols={3} className={classes.gridListMain}>
+                {this.state.userImages.map(images=>(
+                  <GridListTile onClick={()=>this.imageClickHandler(images.id)} className="postedImages-grid-item" key={images.id}>
+                      <img src={images.images.standard_resolution.url} className="image-posts" alt={images.caption.text}/>
+                  </GridListTile>
+                ))}
+                </GridList>
+              </div>
+            </div>
+         </div>
         </div>
-      </div>
-    )
+      )
   }
 }
 
