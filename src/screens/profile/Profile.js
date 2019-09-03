@@ -1,13 +1,26 @@
 import React, { Component } from 'react';
 import Header from "../../common/header/Header";
 import './Profile.css'
+import { withStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
 
+
+const styles = theme => ({
+  avatar: {
+    margin: 10,
+    width: 50,
+    height: 50,
+    marginLeft: 200,
+  },
+
+})
 
 class Profile extends Component {
 
   constructor() {
     super();
     this.state = {
+      dataAPIEndPt1:[],
       profilePic: [],
       loggedIn: sessionStorage.getItem("access_token") == null ? false : true,
       profilePic: [],
@@ -30,6 +43,7 @@ class Profile extends Component {
      xhrEndPt1.addEventListener("readystatechange", function(){
          if (this.readyState === 4){
              console.log(JSON.parse(this.responseText));
+             that.setState({dataAPIEndPt1: JSON.parse(this.responseText).data});
              that.setState({profilePic: JSON.parse(this.responseText).data.profile_picture});
              that.setState({username:JSON.parse(this.responseText).data.username});
              that.setState({followedBy: JSON.parse(this.responseText).data.counts.followed_by});
@@ -54,12 +68,12 @@ class Profile extends Component {
      });
      xhrEndPt2.open("GET",this.props.baseUrl+"media/recent?access_token=8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784");
      xhrEndPt2.send(null);
-
-    
+ 
   }
 
   
   render() {
+    const { classes } = this.props;
     return(
         <div>
          <Header 
@@ -69,9 +83,13 @@ class Profile extends Component {
          profilePic={this.state.profilePic} 
          loggedIn={this.state.loggedIn} /> 
 
-         Profile Page
-       </div>
+          <div className="profilePage">
+            <div className="profileInfoSection">
+                 <Avatar alt="Profile_pic" src={this.state.profilePic} className={classes.avatar}/>
+            </div>
+          </div>
+      </div>
     )
   }}
 
-  export default Profile;
+  export default withStyles(styles) (Profile);
