@@ -15,15 +15,15 @@ import Avatar from '@material-ui/core/Avatar';
 
 
 const styles = (theme => ({
-  menuList:{ 
+  menuList: {
     width: 150,
     padding: 0,
     marginLeft: 7,
-},
+  },
 }))
 
 
-  class Header extends Component {
+class Header extends Component {
 
   constructor() {
     super();
@@ -36,7 +36,7 @@ const styles = (theme => ({
 
 
 
- 
+
   openMenuHandler = () => {
     this.setState({ menuIsOpen: true });
   }
@@ -52,69 +52,69 @@ const styles = (theme => ({
 
 
   accountClickHandler = () => {
-    ReactDOM.render(<Profile baseUrl={this.props.baseUrl}/>, document.getElementById('root'));
-   
+    ReactDOM.render(<Profile baseUrl={this.props.baseUrl} />, document.getElementById('root'));
+
   }
 
   onProfileIconClickHandler = (event) => {
-    this.state.anchorEl ? this.setState({anchorEl: null}) : this.setState({anchorEl: event.currentTarget});
+    this.state.anchorEl ? this.setState({ anchorEl: null }) : this.setState({ anchorEl: event.currentTarget });
     this.openMenuHandler();
   }
 
   goToLoginPage = () => {
-    if(this.state.loggedIn === false){
-      return <Redirect to = "/"/>
+    if (this.state.loggedIn === false) {
+      return <Redirect to="/" />
     }
   }
 
   render() {
-    const {classes} = this.props;
-         return (
-        <div>
-          {this.goToLoginPage()}
-          <header className="app-header">
-            <a className="logo" href="/home">Image Viewer</a>
-            {/* Search Box Added  */}
-            {this.props.showSearchBox === "true" ?
-              <div className="searchBox" >
-                <img src={logo} className="app-logo" alt="Search Logo" />
-                <FormControl className="formControl">
-                  <Input className="searchText" type="text" placeholder="Search..." disableUnderline={true} 
-                  onChange={this.props.searchChangeHandler}/>
-                </FormControl>
-              </div> : ""}
-            {/* User Profile Icon Added  */}
-            {this.props.loggedIn === true ?
+    const { classes } = this.props;
+    return (
+      <div>
+        {this.goToLoginPage()}
+        <header className="app-header">
+          <a className="logo" href="/home">Image Viewer</a>
+          {/* Search Box Added  */}
+          {this.props.showSearchBox === "true" ?
+            <div className="searchBox" >
+              <img src={logo} className="app-logo" alt="Search Logo" />
+              <FormControl className="formControl">
+                <Input className="searchText" type="text" placeholder="Search..." disableUnderline={true}
+                  onChange={this.props.searchChangeHandler} />
+              </FormControl>
+            </div> : ""}
+          {/* User Profile Icon Added  */}
+          {this.props.loggedIn === true ?
             <span>
-                <IconButton   
+              <IconButton
                 className="iconBtn"
                 size="medium"
-                onClick={event =>this.onProfileIconClickHandler(event)} >
+                onClick={event => this.onProfileIconClickHandler(event)} >
                 <Avatar className="avatar">
                   <img
                     className="profilePic"
                     src={this.props.profilePic}
-                    alt="logged in user profile pic"/>
+                    alt="logged in user profile pic" />
                 </Avatar>
               </IconButton>
               <Menu
-              className="menubar"
-             anchorEl={this.state.anchorEl}
-              open={this.state.menuIsOpen}
-              onClose={this.closeMenuHandler}>
+                className="menubar"
+                anchorEl={this.state.anchorEl}
+                open={this.state.menuIsOpen}
+                onClose={this.closeMenuHandler}>
                 <MenuList className={classes.menuList}>
                   {this.props.showAccount === "true" ?
-                  <div>
-                  <MenuItem onClick={this.accountClickHandler}>My Account</MenuItem><Divider varient="middle"/>
-                  </div>:"" }
+                    <div>
+                      <MenuItem onClick={this.accountClickHandler}>My Account</MenuItem><Divider varient="middle" />
+                    </div> : ""}
                   <MenuItem onClick={this.logoutClickHandler}>Logout</MenuItem>
                 </MenuList>
-             </Menu> 
+              </Menu>
             </span> : ""}
-           </header> <br /> 
+        </header> <br />
       </div >
     )
-    }
+  }
 }
 
 export default withStyles(styles)(Header);
