@@ -11,7 +11,7 @@ import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
-
+import { Redirect } from 'react-router-dom'
 
 
 
@@ -57,16 +57,19 @@ class Login extends Component {
     render(){
         return(
             <div>
+               {this.state.loggedIn === true ?
+                <Redirect to= "/home"/>
+                :
+                 <div>              
                 <Header baseUrl={this.props.baseUrl}/> 
-            
-                <Card className="cardStyle">
+                   <Card className="cardStyle">
                     <CardContent>
                         <Typography variant="h4">
                                LOGIN
                         </Typography> <br/>
                         <FormControl required className="formControl"> 
                             <InputLabel htmlFor="username">Username</InputLabel>
-                            <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler}/>
+                            <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler} value={this.state.username}/>
                         <FormHelperText className={this.state.reqUsername}><span className="red">required</span></FormHelperText>
                          </FormControl><br/><br/>
                         <FormControl required className="formControl">
@@ -82,7 +85,10 @@ class Login extends Component {
                             </Button>
                     </CardContent>
                 </Card>
+                </div>
+               }
             </div>
+               
         )
     }
 }

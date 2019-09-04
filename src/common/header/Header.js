@@ -45,10 +45,11 @@ const styles = (theme => ({
     this.setState({ menuIsOpen: false });
   }
 
-  logoutHandler = () => {
+  logoutClickHandler = () => {
     sessionStorage.removeItem("access_token");
     this.setState({ loggedIn: false });
   }
+
 
   accountClickHandler = () => {
     ReactDOM.render(<Profile baseUrl={this.props.baseUrl}/>, document.getElementById('root'));
@@ -79,7 +80,7 @@ const styles = (theme => ({
                 <img src={logo} className="app-logo" alt="Search Logo" />
                 <FormControl className="formControl">
                   <Input className="searchText" type="text" placeholder="Search..." disableUnderline={true} 
-                  onChange={this.props.onSearchInputChangeHandler}/>
+                  onChange={this.props.searchChangeHandler}/>
                 </FormControl>
               </div> : ""}
             {/* User Profile Icon Added  */}

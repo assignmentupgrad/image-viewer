@@ -14,6 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
+import { Redirect } from 'react-router-dom'
 import * as moment from 'moment';
 
 
@@ -84,7 +85,8 @@ class Home extends Component{
             addComment: [],
             searchField: "",
             filteredRes:[],
-            
+            comments:[],
+            commentText:"",
             }
     }
         
@@ -111,6 +113,7 @@ class Home extends Component{
                 if (this.readyState === 4) {
                  console.log(JSON.parse(this.responseText).data);
                  that1.setState({userImages: JSON.parse(this.responseText).data});
+                 that1.setState({filteredRes:that1.state.userImages});
                  console.log(JSON.parse(this.responseText));
                  }                
             });
@@ -119,31 +122,61 @@ class Home extends Component{
 
             }
 
-          onSearchFilterHandler = e => {
-          //     const searchText = event.target.value.toLowerCase();
-          //     let userDetails = JSON.parse(JSON.stringify(this.state.userImages));
-          //  let filterRes = [];
-          //  if(userDetails !== null && userDetails.length > 0){
-          //    filterRes = userDetails.filter( 
-          //      post => (
-          //      post.caption.text.split("\n")[0].toLowerCase.indexOf(searchText) > -1
-          //      ));
-          //      this.setState({filteredRes:filterRes});
-          //   }
+         onSearchChange = e => {
+           this.setState({userImages:this.state.filteredRes});
+            const searchText = e.target.value.toLowerCase();
+          let userDetails = JSON.parse(
+            JSON.stringify(this.state.userImages)
+            );
+           let filterRes = [];
+       if (userDetails !== null && userDetails.length > 0){
+         filterRes = userDetails.filter( 
+           post => 
+           post.caption.text
+            .split("\n")[0]
+            .toLowerCase()
+            .indexOf(searchText) > -1
+           );
+           this.setState({
+             userImages:[...filterRes],
+          });
         }
+      };
 
-         addBtnCommentHandler = (event, id) => {
-            let user_Images = JSON.parse(JSON.stringify(this.state.userImages));
-
-         }
+       
                 
         myDateFun = (imgdate) => {
           return moment(new Date(parseInt(imgdate))).format("DD/MM/YYYY HH:mm:ss");
         }
          
-        addCommentChangeHandler = (event) => {
-          this.setState({addComment:event.target.value});
-        }
+
+        onClickAddBtn = (imageId) => {
+          var count = this.state.count
+          var comment = {
+              id: count,
+              imageId: imageId,
+              username: this.state.username,
+              text: this.state.commentText.text,
+          }
+          count++;
+          var comments = [...this.state.comments, comment];
+          this.setState({
+              count: count,
+              comments: comments,
+              commentText: "",
+          })
+      };
+    
+      onCommentChangeHandler = (event, imageId) => {
+          var comment = {
+              id: imageId,
+              text: event.target.value,
+          }
+          this.setState({
+              commentText: comment,
+          });
+      }
+       
                 
         render() {
             const { classes } = this.props;
@@ -156,11 +189,12 @@ class Home extends Component{
                 profilePic={this.state.profilePic} 
                 loggedIn={this.state.loggedIn}
                 showAccount="true"
-                onSearchInputChangeHandler={this.onSearchFilterHandler()}/> 
+                searchChangeHandler={this.onSearchChange}/> 
+                {this.state.loggedIn === true ?
                 <div>             
                     <GridList cols={2} cellHeight='auto'>
                     {this.state.userImages.map(img =>(
-                        <Card className={classes.card} key={img.cols}>
+                        <Card className={classes.card} key={"card"+img.id}>
                             <CardHeader avatar={
                              <Avatar alt="profile-Pic" src={(this.state.profilePic).toString()} className={classes.avatar}/>
                             }    
@@ -173,11 +207,9 @@ class Home extends Component{
                                 <img src={img.images.standard_resolution.url} className="userImage" alt={img.caption.text}/>
                             </GridListTile>
                             <hr className={classes.hr}/>
-                            { this.state.comment !=="" ?
-                            <p>{img.user.username}:{this.state.comment} </p> : ""}
-                             <h4 className="captionText">{(img.caption.text).split("#")[0]}</h4>
+                            <h4 className="captionText">{(img.caption.text).split("#")[0]}</h4>
                             {img.tags.map(tags=>(
-                               <span className="captionTag">{"#"+tags+""}</span>
+                               <span className="captionTag" key={"tags"+tags}>{("#"+tags+"")}</span>
                             ))} <br/>
                              <span onClick={()=>this.setState({favClick: !this.state.favClick})}>
                              {this.state.favClick === true? <div>
@@ -186,13 +218,23 @@ class Home extends Component{
                            <div><span><FavoriteBorderIcon className={classes.icon}/></span>  <span className="like">{" "+ (img.likes.count)++} likes</span></div> } 
                             </span>
                              <br/><br/>
-                            <span>
+                            
+                          <div className="comments-block">
+                          {this.state.comments.map(comment => (
+                           this.state.clickedImgId === comment.imageId ?
+                           <div className="comment-display" key={comment.id}>
+                           {comment.username}: {comment.text}
+                               </div> : null
+                             ))}
+                           </div> 
+
+                           <span>
                             <FormControl className="formControl"> 
                                 <InputLabel htmlFor="addComment">Add a comment</InputLabel>
                                 <Input id="addComment" type="text" comment={this.state.comment} placeholder="Add a comment"
-                                onChange={this.addCommentChangeHandler.bind(this)} value={this.state.addComment}/>
+                                onChange={(event) => this.onCommentChangeHandler(event, img.id)} value={this.state.addComment} />
                             </FormControl>
-                            <Button variant="contained" onClick={this.addBtnCommentHandler.bind(this,img.id)} 
+                            <Button variant="contained" onClick={() => this.onClickAddBtn(img.id)}
                             color="primary" className="AddBtn">
                                 ADD
                             </Button>
@@ -201,7 +243,8 @@ class Home extends Component{
                          </Card>
                     ))}
                  </GridList>
-                 </div>
+                 </div> : <Redirect to="/" />
+                }
                         
             </div>
                )}

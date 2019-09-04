@@ -62,4 +62,72 @@
     .image-grid-item {
         margin: 8px;
     }
+};
+
+.leftModal{
+    width: 50%;
+    height: 'auto';
+}
+
+.rightModal{
+    display: flex;
+    flex-direction: column;
+}
+
+.modalHeader{
+    flex-direction: row;
+}
+
+.clickedImg{
+    height: 80%;
+    width: 80%;
+    padding-top: 10px;
+}
+
+.userProfilePic{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.captionTag{
+    font-weight: bold;
+    text-align: justify;
+    margin-left: 10px;
+    color: lightblue;
+    margin-top: 0px;
+    padding: 0px;
+
+}
+
+.clickedImgUserName{
+    margin-left: 30px;
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    position: absolute; 
+}
+
+.line {
+        border: 1px solid lightgray;
+        line-height: 15cm;
+}
+
+.favIcon {
+    float: left;
+    color: red;  
+}
+
+.likeSection{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+
+.modalBody{
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
 }
