@@ -35,7 +35,7 @@ class Header extends Component {
   }
 
 
-
+  // Modal Handler methods for opening and menu list on defined action events
 
   openMenuHandler = () => {
     this.setState({ menuIsOpen: true });
@@ -45,21 +45,29 @@ class Header extends Component {
     this.setState({ menuIsOpen: false });
   }
 
+
+  // click event to execute logout function
+
+
   logoutClickHandler = () => {
     sessionStorage.removeItem("access_token");
     this.setState({ loggedIn: false });
   }
 
+  //action event on my account tab click
 
   accountClickHandler = () => {
     ReactDOM.render(<Profile baseUrl={this.props.baseUrl} />, document.getElementById('root'));
 
   }
 
+  //action event on profile icon click
+
   onProfileIconClickHandler = (event) => {
     this.state.anchorEl ? this.setState({ anchorEl: null }) : this.setState({ anchorEl: event.currentTarget });
     this.openMenuHandler();
   }
+
 
   goToLoginPage = () => {
     if (this.state.loggedIn === false) {
@@ -96,8 +104,8 @@ class Header extends Component {
                     src={this.props.profilePic}
                     alt="logged in user profile pic" />
                 </Avatar>
-              </IconButton>
-              <Menu
+                </IconButton>
+              <Menu            //Menulist added to click event on profile pic icon of logged in user
                 className="menubar"
                 anchorEl={this.state.anchorEl}
                 open={this.state.menuIsOpen}

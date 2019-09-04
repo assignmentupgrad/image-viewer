@@ -19,7 +19,7 @@ import { Redirect } from 'react-router-dom'
 //import Divider from '@material-ui/core/Divider';
 
 
-
+//Styles to define modal orientations
 const customStyles = {
   content: {
     top: '60%',
@@ -30,6 +30,19 @@ const customStyles = {
     transform: 'translate(-50%, -50%)'
   }
 };
+
+const CustomStyles = {
+  content: {
+  top: '45%',
+  left: '55%',
+  right: 'auto',
+  bottom: 'auto',
+  marginRight: '-50%',
+  width: '60%',
+  height: '50%',
+  transform: 'translate(-50%, -50%)'
+  }
+  };
 
 const styles = theme => ({
   avatar: {
@@ -45,17 +58,6 @@ const styles = theme => ({
     transform: 'translateZ(0)',
     cursor: 'pointer'
 },
-imgModalcustomStyles: {
-  top: 300,
-  left: 400,
-  right: 'auto',
-  bottom: 'auto',
-  marginRight: '-50%',
-  width: '60%',
-  height: '50%',
-  transform: 'translate(-50%, -50%)'
-  
-  },
    hr: {
         width: 460,
    },
@@ -65,6 +67,7 @@ imgModalcustomStyles: {
  }
 })
 
+//setting path parameter values for defining SVG icons
 
 
 function FavoriteBorderIcon(props) {
@@ -86,9 +89,6 @@ function FavoriteIcon(props) {
     </SvgIcon>
   );
 }
-
-
-
 
 const TabContainer = function (props) {
   return (
@@ -167,6 +167,8 @@ class Profile extends Component {
     xhrEndPt2.send(null);
 
   }
+ 
+//different action event definations
 
   openModalHandler = () => {
     this.setState({modalIsOpen: true});
@@ -194,6 +196,8 @@ class Profile extends Component {
     this.closeModalHandler();
   }
 
+  // Identifying which image was clicked and accordingly setting some params to access them to perform different actions
+
   onImageClickHandler = (image) => {
     console.log(image);
     this.setState({clickedImgId: image.id});
@@ -207,7 +211,7 @@ class Profile extends Component {
            
     }
     
-
+//Click event for adding comments entered in the comment input area
     onClickAddBtn = (imageId) => {
       var count = this.state.count
       var comment = {
@@ -225,6 +229,8 @@ class Profile extends Component {
       })
   };
 
+  // comment handler definitions
+
   onCommentChangeHandler = (event, imageId) => {
       var comment = {
           id: imageId,
@@ -241,11 +247,14 @@ class Profile extends Component {
         const { classes } = this.props;
         return (
       <div>
+        {/* Importing header with the required params set */}
         <Header
           baseUrl={this.props.baseUrl}
           showSearchBox="false"
           showAccount="false"
           profilePic={this.state.profilePic}
+
+          //Profile page information section implementation
           loggedIn={this.state.loggedIn} />
           {this.state.loggedIn === true ?
         <div className="profilePage">
@@ -263,6 +272,8 @@ class Profile extends Component {
                   </Fab>
                 </span>
               </p>
+
+              {/* Modal implementation for the edit button */}
               <Modal ariaHideApp={false} isOpen={this.state.modalIsOpen} contentLabel="EditIcon"
               onRequestClose={this.closeModalHandler} style={customStyles}>
                 <h2>Edit</h2><br/>
@@ -276,7 +287,7 @@ class Profile extends Component {
                 <Button variant="contained" onClick={this.updateFullNameHandler} color="primary">UPDATE</Button>
               </Modal>
             </div>
-            </div>
+            </div> {/* diplaying all the images posted by the logged */}
             <div  className="flex-container">
               <div className="imagePosts">
                <GridList cellHeight={350} cols={3} className={classes.gridListMain}>
@@ -287,7 +298,7 @@ class Profile extends Component {
                 ))}
                 </GridList>
                 <Modal ariaHideApp={false} isOpen={this.state.imgModalIsOpen} contentLabel="imgPost"
-                onRequestClose={this.closeImgModalHandler} style={classes.imgModalcustomStyles}>
+                onRequestClose={this.closeImgModalHandler} style={CustomStyles}>
                   <div className="flex-container">
                     <div className="leftModal">
                       <img src={this.state.clickedImg} className="clickedImg" alt={this.state.clickedImgCaption}/>

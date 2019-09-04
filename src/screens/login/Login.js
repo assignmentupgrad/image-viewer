@@ -17,6 +17,7 @@ import { Redirect } from 'react-router-dom'
 
 class Login extends Component {
 
+//constructor definitions for state variables declarations
     constructor() {
         super();
         this.state = {
@@ -30,14 +31,20 @@ class Login extends Component {
         }
     }
 
+    // Input Handler definitions to set the parameter value username input by user
+
     inputUsernameChangeHandler = (e) => {
         this.setState({ username: e.target.value });
     }
+
+    // Password Handler definitions to set the parameter value of input password entered by user
 
     inputPasswordChangeHandler = (e) => {
         this.setState({ password: e.target.value });
     }
 
+    //click event on login button to read the username and password values entered by user and to take
+    //necessary actions further
     loginButtonHandler = () => {
         this.state.username === "" ? this.setState({ reqUsername: "dispBlock" }) : this.setState({ reqUsername: "dispNone" });
         this.state.password === "" ? this.setState({ reqPassword: "dispBlock" }) : this.setState({ reqPassword: "dispNone" });
@@ -57,16 +64,20 @@ class Login extends Component {
     render() {
         return (
             <div>
-                {this.state.loggedIn === true ?
+            
+                {this.state.loggedIn === true ?   
                     <Redirect to="/home" />
                     :
                     <div>
+                        {/* Calling Header definitions */}
                         <Header baseUrl={this.props.baseUrl} />
-                        <Card className="cardStyle">
+                        <Card className="cardStyle">                   
                             <CardContent>
                                 <Typography variant="h4">
                                     LOGIN
-                        </Typography> <br />
+                        </Typography> <br />            
+
+                        {/* Login form Implementations for logging in into the application     */}
                                 <FormControl required className="formControl">
                                     <InputLabel htmlFor="username">Username</InputLabel>
                                     <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler} value={this.state.username} />

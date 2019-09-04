@@ -47,6 +47,8 @@ const styles = theme => ({
      }
 });
 
+//svg icon path definations
+
 function FavoriteBorderIcon(props) {
     return (
       <SvgIcon {...props}>
@@ -122,6 +124,7 @@ class Home extends Component{
 
             }
 
+            //implementation of serching images posted by users based on some keyword
          onSearchChange = e => {
            this.setState({userImages:this.state.filteredRes});
             const searchText = e.target.value.toLowerCase();
@@ -144,40 +147,43 @@ class Home extends Component{
       };
 
        
-                
+                     
         myDateFun = (imgdate) => {
           return moment(new Date(parseInt(imgdate))).format("DD/MM/YYYY HH:mm:ss");
         }
          
 
-        onClickAddBtn = (imageId) => {
-          var count = this.state.count
-          var comment = {
-              id: count,
-              imageId: imageId,
-              username: this.state.username,
-              text: this.state.commentText.text,
-          }
-          count++;
-          var comments = [...this.state.comments, comment];
-          this.setState({
-              count: count,
-              comments: comments,
-              commentText: "",
-          })
-      };
-    
-      onCommentChangeHandler = (event, imageId) => {
-          var comment = {
-              id: imageId,
-              text: event.target.value,
-          }
-          this.setState({
-              commentText: comment,
-          });
+       //Click event for adding comments entered in the comment input area
+    onClickAddBtn = (imageId) => {
+      var count = this.state.count
+      var comment = {
+          id: count,
+          imageId: imageId,
+          username: this.state.username,
+          text: this.state.commentText.text,
       }
-       
-                
+      count++;
+      var comments = [...this.state.comments, comment];
+      this.setState({
+          count: count,
+          comments: comments,
+          commentText: "",
+      })
+  };
+
+  // comment handler definitions
+
+  onCommentChangeHandler = (event, imageId) => {
+      var comment = {
+          id: imageId,
+          text: event.target.value,
+      }
+      this.setState({
+          commentText: comment,
+      });
+  }
+
+                      
         render() {
             const { classes } = this.props;
 
@@ -206,11 +212,20 @@ class Home extends Component{
                             <GridListTile key={"userImg"+ img.id} className="user-image-grid-item">
                                 <img src={img.images.standard_resolution.url} className="userImage" alt={img.caption.text}/>
                             </GridListTile>
+                            <div className="imgTiltleTag">
                             <hr className={classes.hr}/>
                             <h4 className="captionText">{(img.caption.text).split("#")[0]}</h4>
                             {img.tags.map(tags=>(
                                <span className="captionTag" key={"tags"+tags}>{("#"+tags+"")}</span>
-                            ))} <br/>
+                            ))} <br/></div>
+                           <div className="comments-block">
+                          {this.state.comments.map(comment => (
+                           this.state.clickedImgId === comment.imageId ?
+                           <div className="comment-display" key={comment.id}>
+                           {comment.username}: {comment.text}
+                               </div> : null
+                          ))}
+                              </div>
                              <span onClick={()=>this.setState({favClick: !this.state.favClick})}>
                              {this.state.favClick === true? <div>
                              <span className="favIcon"><FavoriteIcon className={classes.icon}/></span>
@@ -218,7 +233,7 @@ class Home extends Component{
                            <div><span><FavoriteBorderIcon className={classes.icon}/></span>  <span className="like">{" "+ (img.likes.count)++} likes</span></div> } 
                             </span>
                              <br/><br/>
-                            
+                                                      
                           <div className="comments-block">
                           {this.state.comments.map(comment => (
                            this.state.clickedImgId === comment.imageId ?
@@ -228,17 +243,20 @@ class Home extends Component{
                              ))}
                            </div> 
 
-                           <span>
-                            <FormControl className="formControl"> 
-                                <InputLabel htmlFor="addComment">Add a comment</InputLabel>
-                                <Input id="addComment" type="text" comment={this.state.comment} placeholder="Add a comment"
-                                onChange={(event) => this.onCommentChangeHandler(event, img.id)} value={this.state.addComment} />
+                           <div className="commentAddSection" >
+                        <FormControl className="formControl"> 
+                              <InputLabel htmlFor="addComment">Add a comment</InputLabel>
+                              <Input 
+                              id="addComment" 
+                              type="text" 
+                              comment={this.state.addComment} 
+                              onChange={(event) => this.onCommentChangeHandler(event, this.state.clickedImgId)} value={this.state.addComment} 
+                               value={this.state.addComment}/>
                             </FormControl>
-                            <Button variant="contained" onClick={() => this.onClickAddBtn(img.id)}
-                            color="primary" className="AddBtn">
+                            <Button variant="contained" color="primary" className="AddBtn"  onClick={() => this.onClickAddBtn(this.state.clickedImgId)}>
                                 ADD
                             </Button>
-                            </span>
+                        </div>
                             </CardContent>
                          </Card>
                     ))}
