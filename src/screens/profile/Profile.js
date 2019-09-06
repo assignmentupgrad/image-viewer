@@ -241,8 +241,6 @@ class Profile extends Component {
       });
   }
 
-  
-
   render() {
         const { classes } = this.props;
         return (
@@ -328,9 +326,9 @@ class Profile extends Component {
                         <span onClick={()=>this.setState({favClick: !this.state.favClick})}>
                              {this.state.favClick === true? <div>
                              <span className="favIcon"><FavoriteIcon className={classes.icon}/></span>
-                              <span className="like">{" "+ (this.state.clickedImgLikes)--} likes</span> </div>:
+                              <span className="like">{" "+ (this.state.clickedImgLikes)-1} likes</span> </div>:
                            <div><span><FavoriteBorderIcon className={classes.icon}/></span>  
-                           <span className="like">{" "+ (this.state.clickedImgLikes)++} likes</span></div> } 
+                           <span className="like">{" "+ (this.state.clickedImgLikes)+1} likes</span></div> } 
                             </span>
                         </div>
                         <div className="commentAddSection" >
@@ -341,7 +339,7 @@ class Profile extends Component {
                               type="text" 
                               comment={this.state.addComment} 
                               onChange={(event) => this.onCommentChangeHandler(event, this.state.clickedImgId)} value={this.state.addComment} 
-                               value={this.state.addComment}/>
+                              />
                             </FormControl>
                             <Button variant="contained" color="primary" className="AddBtn"  onClick={() => this.onClickAddBtn(this.state.clickedImgId)}>
                                 ADD

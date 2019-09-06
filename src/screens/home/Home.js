@@ -80,7 +80,7 @@ class Home extends Component{
             loggedIn: sessionStorage.getItem("access_token") === "null" ? false : true,
             userImages: [],
             createdTime: [],
-            username: [],
+            username: "",
             captionText:[],
             captionTag:[],
             favClick: false,
@@ -88,7 +88,8 @@ class Home extends Component{
             searchField: "",
             filteredRes:[],
             comments:[],
-            commentText:"",
+            commentText:[],
+            count: 1,
             }
     }
         
@@ -165,6 +166,7 @@ class Home extends Component{
       count++;
       var comments = [...this.state.comments, comment];
       this.setState({
+          ...this.state,
           count: count,
           comments: comments,
           commentText: "",
@@ -179,7 +181,8 @@ class Home extends Component{
           text: event.target.value,
       }
       this.setState({
-          commentText: comment,
+        ...this.state,
+        commentText: comment,
       });
   }
 
@@ -206,7 +209,7 @@ class Home extends Component{
                             }    
                              title={img.user.username}     
                             // subheader={moment(img.caption.created_time).format("DD-MM-YYYY hh:mm:ss")}>
-                            subheader = {this.myDateFun(img.caption.created_time)}>
+                            subheader = {this.myDateFun(img.created_time)}>
                             </CardHeader>
                             <CardContent>
                             <GridListTile key={"userImg"+ img.id} className="user-image-grid-item">
@@ -220,13 +223,13 @@ class Home extends Component{
                             ))} <br/></div>
                            <div className="comments-block">
                           {this.state.comments.map(comment => (
-                           this.state.clickedImgId === comment.imageId ?
+                           img.id === comment.imageId ?
                            <div className="comment-display" key={comment.id}>
-                           {comment.username}: {comment.text}
+                           {img.user.username}: {comment.text}
                                </div> : null
                           ))}
                               </div>
-                             <span onClick={()=>this.setState({favClick: !this.state.favClick})}>
+                             <span onClick={(event)=>this.setState({favClick: !this.state.favClick})}>
                              {this.state.favClick === true? <div>
                              <span className="favIcon"><FavoriteIcon className={classes.icon}/></span>
                               <span className="like">{" "+ (img.likes.count)--} likes</span> </div>:
@@ -234,26 +237,17 @@ class Home extends Component{
                             </span>
                              <br/><br/>
                                                       
-                          <div className="comments-block">
-                          {this.state.comments.map(comment => (
-                           this.state.clickedImgId === comment.imageId ?
-                           <div className="comment-display" key={comment.id}>
-                           {comment.username}: {comment.text}
-                               </div> : null
-                             ))}
-                           </div> 
-
-                           <div className="commentAddSection" >
+                            <div className="commentAddSection" >
                         <FormControl className="formControl"> 
                               <InputLabel htmlFor="addComment">Add a comment</InputLabel>
                               <Input 
                               id="addComment" 
                               type="text" 
                               comment={this.state.addComment} 
-                              onChange={(event) => this.onCommentChangeHandler(event, this.state.clickedImgId)} value={this.state.addComment} 
-                               value={this.state.addComment}/>
+                              onChange={(event) => this.onCommentChangeHandler(event, img.id)} value={img.id === this.state.commentText.id ? this.state.commentText.text : ""} 
+                              />
                             </FormControl>
-                            <Button variant="contained" color="primary" className="AddBtn"  onClick={() => this.onClickAddBtn(this.state.clickedImgId)}>
+                            <Button variant="contained" color="primary" className="AddBtn"  onClick={() => this.onClickAddBtn(img.id)}>
                                 ADD
                             </Button>
                         </div>
